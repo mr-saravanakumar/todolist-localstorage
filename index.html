@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODOLIST</title>
+</head>
+<style type="text/css">
+body{
+    background-color:cornflowerblue;
+    margin-left: 600px;
+    margin-top: 150px;
+}
+.input-list p{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:chocolate;
+    margin-left: 60px;
+}
+#tasksid{
+    cursor: pointer;
+}
+
+.active{
+    color:red;
+    text-decoration: line-through;
+}
+#container p{
+    cursor: pointer;
+}
+#add{
+    transition: 1.5s;
+    cursor: pointer;
+    width: 150px;
+    margin-left: 30px;
+    border: none;
+    height: 30px;
+    border-radius: 10px;
+}
+#add:hover{
+    transition:1.5s;
+    background-color:blueviolet;
+    color:white;
+}
+.input-list{
+    margin-top: -60px;
+}
+.input-list input{
+    width:200px;
+}
+#container-scroll{
+    width:200px;
+    height: 400px;
+    padding: 50px;;
+    border-radius:10px;
+    background-color: ivory;
+}
+::-webkit-scrollbar{
+    display: none;
+}
+#container{
+    margin-left: -25px;
+    margin-top: 50px;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 300px;
+    width: 250px;
+}
+#container p{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color:rgb(247, 222, 222);
+    height: 35px;
+    padding-top: 15px;
+    padding-left: 10px;
+    border-radius: 10px;
+}
+#container p:nth-child(even)
+{
+    background-color:rgb(254, 167, 180);
+}
+</style>
+<body>
+    <div id="container-scroll">
+    <div class="input-list">
+        <p>TODOLIST</p>
+        <input type="text" id="totext"><br/><br/>
+        <button id="add">ADD</button>
+    </div>
+    <div id="container">
+     
+    </div>
+</div>
+</body>
+<script>
+    var tasks=[];
+    window.onload=()=>{
+        task=JSON.parse(window.localStorage.getItem("data"))||[]
+        task.forEach(t=>{
+            addingtasks(t)
+        })
+    }
+    const container=document.getElementById("container");
+    const addtask=document.getElementById("add");
+    addtask.addEventListener("click",()=>{
+        var totext=document.getElementById('totext');
+        if(totext.value=="")
+        {
+            return ;
+        }
+        else{
+            addingtasks(totext.value);
+        }
+    })
+
+    function addingtasks(v){
+        const p=document.createElement('p');
+        p.innerHTML=v;
+        tasks.push(v);
+        localStorage.setItem("data",JSON.stringify(tasks));
+        container.appendChild(p);
+        p.addEventListener("click",()=>{
+            p.classList.toggle("active");
+        })
+       p.addEventListener("dblclick",()=>{
+             container.removeChild(p);
+             remove(v);
+        })
+        totext.value='';
+    }
+             function remove(v)
+             {
+                 let index =tasks.indexOf(v);
+                 if(index > -1)
+                 {
+                    tasks.splice(index, 1);
+                    localStorage.setItem("data",JSON.stringify(tasks));
+                 }
+             }
+                
+</script>
+</html>
